@@ -1,46 +1,33 @@
-# Getting Started with Create React App and Redux
+# Project #13 - Argent Bank API
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+This codebase contains the code needed to run the frontend for Argent Bank.
 
-## Available Scripts
+## 1. General information
+This project runs in 2 parts:
+- The [**backend**](https://github.com/loumorganrene/LouPierre_13_Backend)
+- The **frontend** (you are here)
 
-In the project directory, you can run:
+Follow the installation instructions below.
 
-### `npm start`
+## 2. Installing the backend
+ For the frontend to be able to access the data, the backend will first need to be running. To install and run the backend, clone [this repo](https://github.com/loumorganrene/LouPierre_13_Backend) and follow the instructions from the **README**.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 3. Installing the frontend
+### 3.1 Prerequisites
+- [Node.js (Version 16.17)](https://nodejs.org/en/)
+- [NPM](https://www.npmjs.com/)
+- [React Router Dom](https://reactrouter.com/en/main)
+- *(Recommended IDE)* [VSCode](https://code.visualstudio.com/)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 3.2 Launching the project
+1. Clone this repository.
+2. The `npm install` command will allow you to install the dependencies.
+3. The `npm start` command will allow you to run the React app.
 
-### `npm test`
+## 4 Examples of queries
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- `http://localhost:3000/` - Homepage.
+- `http://localhost:3000/login` - Login page.
+- `http://localhost:3000/signup` - Signup page.
+- `http://localhost:3000/user/profile` - User profile page.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
