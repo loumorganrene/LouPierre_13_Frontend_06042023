@@ -4,6 +4,8 @@ import iconSecurity from '../../assets/img/icon-security.png'
 import '../Home/Home.css'
 
 function Home() {
+
+    
   return (
       <main>
           <div className="hero">
