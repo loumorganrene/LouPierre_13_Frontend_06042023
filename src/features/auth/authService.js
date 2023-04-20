@@ -9,7 +9,7 @@ const login = async (userData) => {
     if (response.data) {
         localStorage.getItem('user', JSON.stringify(response.data))
     }
-    console.log(response.data)
+    console.log(JSON.stringify(response.data.body.token))
     return response.data
 }
 

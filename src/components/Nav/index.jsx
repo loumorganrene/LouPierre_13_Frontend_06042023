@@ -26,12 +26,15 @@ function Nav() {
             </a>
             <div>
                 {user
-                    ? (<button
+                    ? (<><span className="main-nav-item">
+                        <i className="fa fa-user-circle"></i>Tony
+                        </span>
+                    <Link to="/"
                         className="main-nav-item"
                         onClick={onLogout}
                     >
-                        <i className="fa fa-user-circle"></i>Sign Out
-                    </button>)
+                            <i className="fa fa-sign-out"></i>Sign Out
+                    </Link></>)
                     : (<Link
                         to="/login"
                         className="main-nav-item"
