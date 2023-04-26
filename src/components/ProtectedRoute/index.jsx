@@ -6,9 +6,7 @@ import { selectCurrentToken } from "../../features/auth/auth.slice"
 function ProtectedRoute() {
 
     const token = useSelector(selectCurrentToken)
-    console.log(token)
     const location = useLocation()
-    console.log(location)
 
     return (
         token

@@ -1,14 +1,18 @@
-
+import { useGetDetailsQuery } from '../../features/user/user.api.slice'
 import '../Profile/Profile.css'
 
 function Profile() {
 
+    const { data, isFetching, isLoading } = useGetDetailsQuery()
+
+    if (isLoading) return <div>Loading...</div>
+    if (!data) return <div>Missing details</div>
 
   return (
       <main className="main bg-dark">
           <div className="header">
-              <h1>Welcome back<br />{}</h1>
-              <button className="edit-button">Edit Name</button>
+              <h1>Welcome back<br />{isFetching ? '...refetching' : `${data.body.firstName}`}</h1>
+              <button className="edit-button" onClick={ () =>{}} >Edit Name</button>
           </div>
           <h2 className="sr-only">Accounts</h2>
           <section className="account">

@@ -25,7 +25,6 @@ function Login() {
 
         try {
             const userData = await login({ email, password }).unwrap()
-            console.log(userData)
             dispatch(setCredentials({ ...userData }))
             navigate('/profile')
         } catch (err) {
