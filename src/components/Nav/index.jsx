@@ -1,14 +1,14 @@
 import argentBankLogo from '../../assets/img/argentBankLogo.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { logout } from '../../features/auth/authSlice'
+import { logout } from '../../features/auth/auth.slice'
 import '../Nav/Nav.css'
 
 function Nav() {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { user } = useSelector((state) => state.auth)
+    const { token } = useSelector((state) => state.auth)
 
     const onLogout = () => {
         dispatch(logout())
@@ -26,7 +26,7 @@ function Nav() {
                 <h1 className="sr-only">Argent Bank</h1>
             </Link>
             <div>
-                {user
+                {token
                     ? (<>
                         <Link to='/profile' className="main-nav-item">
                             <i className="fa fa-user-circle"></i>Tony

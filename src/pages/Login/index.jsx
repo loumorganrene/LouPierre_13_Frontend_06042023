@@ -1,71 +1,64 @@
-import { useEffect, useState } from 'react'
-import { login } from '../../features/auth/authSlice'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '../../features/auth/auth.slice'
+import { useLoginMutation } from '../../features/auth/auth.api.slice'
 import Spinner from '../../components/Spinner'
 import './Login.css'
-import { useNavigate } from 'react-router'
-import { useDispatch, useSelector } from 'react-redux'
 
 function Login() {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    })
 
-    const { email, password } = formData
-
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [errMsg, setErrMsg] = useState('')
     const navigate = useNavigate()
+
+    const [login, { isLoading }] = useLoginMutation()
     const dispatch = useDispatch()
 
-    const { user, isLoading, isError, isSuccess, message } = useSelector(
-        (state) => state.auth)
-
     useEffect(() => {
-        if (isError) {
-            console.log(message)
-        }
+        setErrMsg('')
+    }, [email, password])
 
-        if (isSuccess || user) {
-            navigate('/profile')
-        }
-
-    }, [user, isError, isSuccess, message, navigate, dispatch])
-
-    const onChange = (e) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value
-        }))
-    }
-
-    const onSubmit= (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const userData = {
-            email, 
-            password
+        try {
+            const userData = await login({ email, password }).unwrap()
+            console.log(userData)
+            dispatch(setCredentials({ ...userData }))
+            navigate('/profile')
+        } catch (err) {
+            if (!err?.originalStatus) {
+                // isLoading: true until timeout occurs
+                setErrMsg('No Server Response');
+            } else if (err.originalStatus === 400) {
+                setErrMsg('Missing Username or Password');
+            } else if (err.originalStatus === 401) {
+                setErrMsg('Unauthorized');
+            } else {
+                setErrMsg('Login Failed');
+            }
         }
-
-        dispatch(login(userData))
     }
 
-    if (isLoading) {
-        return <Spinner />
-    }
+    const handleEmailInput = (e) => setEmail(e.target.value)
+    const handlePasswordInput = (e) => setPassword(e.target.value)
 
-        return (
-            <main className="main bg-dark">
+    const content = isLoading ? <Spinner /> : (
+        <main className="main bg-dark">
+            <p>{errMsg}</p>
             <section className="sign-in-content">
                 <i className="fa fa-user-circle sign-in-icon"></i>
                 <h1>Sign In</h1>
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handleSubmit}>
                     <div className="input-wrapper">
                         <label htmlFor='email'>Email</label>
                         <input
                             type="text"
                             id="email"
-                            name='email'
                             value={email}
-                            onChange={onChange}
+                            onChange={handleEmailInput}
                             autoComplete='off'
                             required
                         />
@@ -75,9 +68,8 @@ function Login() {
                         <input
                             type="password"
                             id="password"
-                            name='password'
                             value={password}
-                            onChange={onChange}
+                            onChange={handlePasswordInput}
                             required
                         />
                     </div>
@@ -94,7 +86,10 @@ function Login() {
                     </button>
                 </form>
             </section>
-        </main>)
+        </main>
+    )
+
+    return content
 }
 
 export default Login

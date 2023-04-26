@@ -1,22 +1,20 @@
-import { useNavigate } from "react-router-dom"
+import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { useEffect } from "react"
+import { selectCurrentToken } from "../../features/auth/auth.slice"
 
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute() {
 
- const { user, isSuccess } = useSelector(
-        (state) => state.auth)
+    const token = useSelector(selectCurrentToken)
+    console.log(token)
+    const location = useLocation()
+    console.log(location)
 
-const navigate = useNavigate()
-
-    useEffect(()=>{
-        if (user === null || !isSuccess) {
-            return navigate('/login')
-        }
-    }, [user, isSuccess, navigate])
-
-  return children
+    return (
+        token
+            ? <Outlet />
+            : <Navigate to='/login' state={{ from: location }} replace />
+    )
 }
 
 export default ProtectedRoute
