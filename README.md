@@ -29,5 +29,5 @@ Follow the installation instructions below.
 - `http://localhost:3000/` - Homepage.
 - `http://localhost:3000/login` - Login page.
 - `http://localhost:3000/signup` - Signup page.
-- `http://localhost:3000/user/profile` - User profile page.
+- `http://localhost:3000/profile` - User profile page.
 

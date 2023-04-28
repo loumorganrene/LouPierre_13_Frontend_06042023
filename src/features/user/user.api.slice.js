@@ -5,11 +5,20 @@ export const userApiSlice = apiSlice.injectEndpoints({
         getDetails: builder.query({
             query: () => ({
                 url: 'profile',
-                method: 'POST'
+                method: 'POST',
+                transformResponse: (response) => response.data,
+                providesTags: ['Details'],
+            })
+        }),
+        editDetails: builder.mutation({
+            query: names => ({
+                url: 'profile',
+                method: 'PUT',
+                body: { ...names }
             })
         }),
     }),
 })
 
 
-export const { useGetDetailsQuery } = userApiSlice
+export const { useGetDetailsQuery, useEditDetailsMutation } = userApiSlice

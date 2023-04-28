@@ -1,45 +1,52 @@
 import { useState } from 'react'
-import { useGetDetailsQuery } from '../../features/user/user.api.slice'
+import { useNavigate } from 'react-router-dom'
+import { useGetDetailsQuery, useEditDetailsMutation } from '../../features/user/user.api.slice'
 import '../Profile/Profile.css'
 
 function Profile() {
-    const [newFirstname, setNewFirstname] = useState(null)
-    const [newLastname, setNewLastname] = useState(null)
-    const [isEditing, setIsEditing] = useState(false)
 
-    const { data, isFetching, isLoading } = useGetDetailsQuery()
+    const { data, error, isLoading, isFetching, isSuccess } = useGetDetailsQuery()
 
-    if (isLoading) return <div>Loading...</div>
-    if (!data) return <div>Missing details</div>
+    // const [editDetails, { isLoading: loadingEditedDetails }] = useEditDetailsMutation()
 
-    const firstName = data.body.firstName
-    const lastName = data.body.lastName
+    // const [firstName, setFirstName] = useState(data.body.firstName)
+    // const [lastName, setLastName] = useState(data.body.lastName)
 
-    const handleChangeName = (e) => {
-        e.preventDefault()
-    }
+    // const navigate = useNavigate()
 
-    const handleFirstnameInput = (e) => setNewFirstname(e.target.value)
-    const handleLastnameInput = (e) => setNewLastname(e.target.value)
+    // const [isEditing, setIsEditing] = useState(false)
+    // const onFirstnameChanged = (e) => setFirstName(e.target.value)
+    // const onLastnameChanged = (e) => setLastName(e.target.value)
 
+    // const onSaveDetailsClicked = async () => {
+    //     if (firstName && lastName) {
+    //         await editDetails({ firstName, lastName })
+    //         navigate.push('/profile')
+    //     }
+    // }
 
-    return (
-        <main className="main bg-dark">
-            <div className="header">
-                <h1>Welcome back<br />{isFetching ? '...refetching' : `${firstName}`}</h1>
-                {!isEditing ? (<button
-                    id="edit-name"
-                    className="edit-button"
-                    onClick={() => setIsEditing(true)}>
-                    Edit Name
-                </button>) : (<><form className='edit-username-form' onSubmit={handleChangeName}>
+    return (<main className="main bg-dark">
+
+        {isLoading && <h1>...Loading</h1>}
+        {isFetching && <h1>...Fetching</h1>}
+        {error && <h1>Oops! Something went wrong</h1>}
+        {isSuccess && (<><div className="header">
+            <h1>Welcome back<br />{data.body.firstName}</h1>
+            {/* {!isEditing ? (<button
+                id="edit-name"
+                className="edit-button"
+                onClick={() => setIsEditing(true)}>
+                Edit Name
+            </button>) : (<>
+                <form className='edit-username-form' onSubmit={onSaveDetailsClicked}>
                     <div className="input-wrapper">
                         <label htmlFor='firstName'></label>
                         <input
                             type="text"
                             id="firstName"
                             value={firstName}
-                            onChange={handleFirstnameInput}
+                            onChange={onFirstnameChanged}
+                            disabled={isLoading}
                             autoComplete='off'
                             required
                         />
@@ -49,7 +56,9 @@ function Profile() {
                             type="text"
                             id="lastName"
                             value={lastName}
-                            onChange={handleLastnameInput}
+                            onChange={onLastnameChanged}
+                            disabled={isLoading}
+                            autoComplete='off'
                             required
                         />
                     </div>
@@ -70,8 +79,9 @@ function Profile() {
                             Cancel
                         </button>
                     </div>
-                </form></>)}
-            </div>
+                </form>
+            </>)} */}
+        </div>
             <h2 className="sr-only">Accounts</h2>
             <section className="account">
                 <div className="account-content-wrapper">
@@ -103,8 +113,9 @@ function Profile() {
                     <button className="transaction-button">View transactions</button>
                 </div>
             </section>
-        </main>
-    )
+        </>
+        )}
+    </main>)
 }
 
 export default Profile
