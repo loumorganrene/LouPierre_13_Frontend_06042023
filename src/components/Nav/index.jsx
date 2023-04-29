@@ -1,6 +1,7 @@
 import argentBankLogo from '../../assets/img/argentBankLogo.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { apiSlice } from '../../app/api/api.slice'
 import { logout } from '../../features/auth/auth.slice'
 import '../Nav/Nav.css'
 
@@ -15,6 +16,7 @@ function Nav() {
 
     const onLogout = () => {
         dispatch(logout())
+        dispatch(apiSlice.util.resetApiState())
         navigate('/')
     }
 
