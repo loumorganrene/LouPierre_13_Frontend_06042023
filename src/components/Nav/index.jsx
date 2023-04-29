@@ -4,17 +4,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../../features/auth/auth.slice'
 import '../Nav/Nav.css'
 
+
 function Nav() {
+    
     const navigate = useNavigate()
     const dispatch = useDispatch()
     
     const { token } = useSelector((state) => state.auth)
+    const { details } = useSelector((state) => state.auth)
 
     const onLogout = () => {
         dispatch(logout())
         navigate('/')
     }
-
 
     return (
         <nav className="main-nav">
@@ -27,10 +29,10 @@ function Nav() {
                 <h1 className="sr-only">Argent Bank</h1>
             </Link>
             <div>
-                {token
+                {token && details
                     ? (<>
                         <Link to='/profile' className="main-nav-item">
-                            <i className="fa fa-user-circle"></i>
+                            <i className="fa fa-user-circle"></i> {details.firstName}
                         </Link>
                         <Link to="/"
                             className="main-nav-item"

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../features/auth/auth.slice'
@@ -8,37 +8,19 @@ import './Login.css'
 
 function Login() {
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [errMsg, setErrMsg] = useState('')
     const navigate = useNavigate()
-
-    const [login, { isLoading }] = useLoginMutation()
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        setErrMsg('')
-    }, [email, password])
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const [login, { isLoading }] = useLoginMutation()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        try {
             const userData = await login({ email, password }).unwrap()
             dispatch(setCredentials({ ...userData }))
             navigate('/profile')
-        } catch (err) {
-            if (!err?.originalStatus) {
-                // isLoading: true until timeout occurs
-                setErrMsg('No Server Response');
-            } else if (err.originalStatus === 400) {
-                setErrMsg('Missing Username or Password');
-            } else if (err.originalStatus === 401) {
-                setErrMsg('Unauthorized');
-            } else {
-                setErrMsg('Login Failed');
-            }
-        }
     }
 
     const handleEmailInput = (e) => setEmail(e.target.value)
@@ -46,7 +28,6 @@ function Login() {
 
     const content = isLoading ? <Spinner /> : (
         <main className="main bg-dark">
-            <p>{errMsg}</p>
             <section className="sign-in-content">
                 <i className="fa fa-user-circle sign-in-icon"></i>
                 <h1>Sign In</h1>

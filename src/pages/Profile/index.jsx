@@ -1,38 +1,51 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setDetails } from '../../features/auth/auth.slice'
 import { useGetDetailsQuery, useEditDetailsMutation } from '../../features/user/user.api.slice'
 import '../Profile/Profile.css'
 
 function Profile() {
+    const dispatch = useDispatch()
 
-    const { data, error, isLoading, isFetching, isSuccess } = useGetDetailsQuery()
+    const { 
+        data, 
+        error, 
+        isLoading,
+        isSuccess 
+    } = useGetDetailsQuery(undefined, { refetchOnMountOrArgChange: true })
 
-    // const [editDetails, { isLoading: loadingEditedDetails }] = useEditDetailsMutation()
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
 
-    // const [firstName, setFirstName] = useState(data.body.firstName)
-    // const [lastName, setLastName] = useState(data.body.lastName)
+    const [isEditing, setIsEditing] = useState(false)
+    const [editDetails] = useEditDetailsMutation()
 
-    // const navigate = useNavigate()
+    useEffect(() => {
+        if (!isLoading && isSuccess) {
+            dispatch(setDetails(data.body))
+            setFirstName(data.body.firstName)
+            setLastName(data.body.lastName)
+        }
+    }, [isLoading, isSuccess, dispatch])
 
-    // const [isEditing, setIsEditing] = useState(false)
-    // const onFirstnameChanged = (e) => setFirstName(e.target.value)
-    // const onLastnameChanged = (e) => setLastName(e.target.value)
+    const onSaveDetailsClicked = async (e) => {
+        e.preventDefault()
+        if (firstName && lastName) {
+            const user = await editDetails({ firstName, lastName }).unwrap()
+            dispatch(setDetails(user.body))
+        }
+        setIsEditing(false)
+    }
 
-    // const onSaveDetailsClicked = async () => {
-    //     if (firstName && lastName) {
-    //         await editDetails({ firstName, lastName })
-    //         navigate.push('/profile')
-    //     }
-    // }
+    const onFirstnameChanged = (e) => setFirstName(e.target.value)
+    const onLastnameChanged = (e) => setLastName(e.target.value)
 
     return (<main className="main bg-dark">
 
-        {isLoading && <h1>...Loading</h1>}
-        {isFetching && <h1>...Fetching</h1>}
         {error && <h1>Oops! Something went wrong</h1>}
         {isSuccess && (<><div className="header">
             <h1>Welcome back<br />{data.body.firstName}</h1>
-            {/* {!isEditing ? (<button
+            {!isEditing ? (<button
                 id="edit-name"
                 className="edit-button"
                 onClick={() => setIsEditing(true)}>
@@ -80,7 +93,7 @@ function Profile() {
                         </button>
                     </div>
                 </form>
-            </>)} */}
+            </>)}
         </div>
             <h2 className="sr-only">Accounts</h2>
             <section className="account">

@@ -6,16 +6,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
             query: () => ({
                 url: 'profile',
                 method: 'POST',
-                transformResponse: (response) => response.data,
-                providesTags: ['Details'],
-            })
+            }),
+            providesTags: ['Details'],
         }),
         editDetails: builder.mutation({
             query: names => ({
                 url: 'profile',
                 method: 'PUT',
                 body: { ...names }
-            })
+            }),
+            invalidatesTags: ['Details'],
         }),
     }),
 })

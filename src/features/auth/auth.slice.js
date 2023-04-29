@@ -8,6 +8,9 @@ const authSlice = createSlice({
             const { token } = action.payload.body
             state.token = token
         },
+        setDetails: (state, action) => {
+            state.details = action.payload
+        },
         logout: (state, action) => {
             state.token = null
             state.details = null
