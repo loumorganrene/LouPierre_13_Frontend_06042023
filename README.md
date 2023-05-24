@@ -14,7 +14,7 @@ Follow the installation instructions below.
 
 ## 3. Installing the frontend
 ### 3.1 Prerequisites
-- [Node.js (Version 16.17)](https://nodejs.org/en/)
+- [Node.js (Version 19.6.0)](https://nodejs.org/en/)
 - [NPM](https://www.npmjs.com/)
 - [React Router Dom](https://reactrouter.com/en/main)
 - *(Recommended IDE)* [VSCode](https://code.visualstudio.com/)
