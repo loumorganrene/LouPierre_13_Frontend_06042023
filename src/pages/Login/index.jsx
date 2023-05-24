@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { setCredentials } from '../../features/auth/auth.slice'
+import { setCredentials, setPersist } from '../../features/auth/auth.slice'
 import { useLoginMutation } from '../../features/auth/auth.api.slice'
 import Spinner from '../../components/Spinner'
 import './Login.css'
@@ -11,20 +11,27 @@ function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
+    /* Local state */
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [isChecked, setIsChecked] = useState(false)
 
-    const [login, { isLoading }] = useLoginMutation()
+    /* Login query */
+    const [login, { isLoading, error }] = useLoginMutation()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-            const userData = await login({ email, password }).unwrap()
-            dispatch(setCredentials({ ...userData }))
-            navigate('/profile')
+        const userData = await login({ email, password }).unwrap()
+        dispatch(setCredentials({ ...userData }))
+        if (isChecked === true) {
+            localStorage.setItem('persist', "true")
+            dispatch(setPersist())
+        }
+        navigate('/profile')
     }
-
     const handleEmailInput = (e) => setEmail(e.target.value)
     const handlePasswordInput = (e) => setPassword(e.target.value)
+    const handleCheckbox = () => setIsChecked(prev => !prev)
 
     const content = isLoading ? <Spinner /> : (
         <main className="main bg-dark">
@@ -54,10 +61,15 @@ function Login() {
                         />
                     </div>
                     <div className="input-remember">
-                        <input type="checkbox" id="remember-me" />
+                        <input
+                            type="checkbox"
+                            id="remember-me"
+                            onChange={handleCheckbox}
+                            checked={isChecked}
+                        />
                         <label htmlFor="remember-me">Remember me</label>
                     </div>
-
+                    {error && <p className='errorMsgLl'>Invalid email and/or password.</p>}
                     <button
                         className="sign-in-button"
                         type='submit'

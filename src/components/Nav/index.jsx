@@ -7,10 +7,10 @@ import '../Nav/Nav.css'
 
 
 function Nav() {
-    
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    
+    /* Global state */
     const { token } = useSelector((state) => state.auth)
     const { details } = useSelector((state) => state.auth)
 
@@ -34,7 +34,7 @@ function Nav() {
                 {token && details
                     ? (<>
                         <Link to='/profile' className="main-nav-item">
-                            <i className="fa fa-user-circle"></i> {details.firstName}
+                            <i className="fa fa-user-circle"></i> {details.firstName ? details.firstName : JSON.parse(details).firstName}
                         </Link>
                         <Link to="/"
                             className="main-nav-item"

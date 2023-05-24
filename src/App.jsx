@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import ProtectedRoute from './components/ProtectedRoute'
 import Profile from './pages/Profile'
+import Error from './pages/Error'
 import './App.css'
 
 function App() {
@@ -13,16 +14,19 @@ function App() {
         <div className="App">
           <Routes>
             <Route path='/' element={<Layout />}>
+
               {/* Public Routes : */}
-                <Route index element={<Home />} />
-                <Route path='login' element={<Login />} />
+              <Route index element={<Home />} />
+              <Route path='login' element={<Login />} />
 
-                {/* Protected Routes : */}
-                <Route element={<ProtectedRoute/>}>
-                  <Route path='profile' element={<Profile />} />
-                </Route>
+              {/* Protected Routes : */}
+              <Route element={<ProtectedRoute />}>
+                <Route path='profile' element={<Profile />} />
+              </Route>
 
+              <Route path="*" element={<Error />} />
             </Route>
+
           </Routes>
         </div>
       </Router>

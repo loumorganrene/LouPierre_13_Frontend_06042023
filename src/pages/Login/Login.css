@@ -46,3 +46,8 @@
   padding: 5px;
   font-size: 1.2rem;
 }
+
+.errorMsgLl {
+  color: red;
+  font-weight: bold;
+}

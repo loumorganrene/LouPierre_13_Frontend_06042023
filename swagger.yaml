@@ -1,0 +1,236 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: '1.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+security:
+  - Bearer: []
+paths:
+  /user/transactions:
+    get:
+      tags:
+        - Transactions Module
+      summary: Fetch Transactions List
+      description: API for fetching transactions list
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: "string"
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transactions list retrieved successully
+          schema:
+            $ref: '#/definitions/TransactionsResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    post:
+      tags:
+        - Transactions Module
+      summary: Create new transaction
+      description: API for creating new transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: "string"
+        - in: body
+          name: body
+          description: Transaction Payload
+          required: true
+          schema:
+            $ref: '#/definitions/CreateTransactionPayload'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User transaction created Successfully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/transactions/{transaction-id}:
+    get:
+      tags:
+        - Transactions Module
+      summary: Fetch a transaction details
+      description: API for fetching a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: "string"
+        - in: path
+          name: transaction-id
+          required: true
+          type: integer
+          description: The transaction ID
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction details retrieved successully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Fields
+        '404':
+          description: A transaction with the specified ID was not found
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - Transactions Module
+      summary: Update a transaction details
+      description: API for updating a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: "string"
+        - in: path
+          name: transaction-id
+          required: true
+          type: integer
+          description: The transaction ID
+        - in: body
+          name: body
+          description: Transaction Payload
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateTransactionPayload'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User transaction updated Successfully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Fields
+        '404':
+          description: A transaction with the specified ID was not found
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - Transactions Module
+      summary: Delete a transaction
+      description: API for deleting a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: "string"
+        - in: path
+          name: transaction-id
+          required: true
+          type: integer
+          description: The transaction ID
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction Deleted Successfully
+        '400':
+          description: Invalid Fields
+        '404':
+          description: A transaction with the specified ID was not found
+        '500':
+          description: Internal Server Error
+
+# Define the security scheme type (HTTP bearer)
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Bearer
+    
+definitions:
+# Define the transaction data model
+  Transaction:
+    properties:
+      id:
+        type: integer
+        description: transaction id
+      date:
+        type: string
+        format: date-time
+        description: transaction date
+      description:
+        type: string
+        description: transaction description
+      amount:
+        type: number
+        description: transaction amount
+      type:
+        type: string
+        description: transaction type
+      category:
+        type: string
+        description: transaction category
+      note:
+        type: string
+        description: transaction note
+        
+# Define the request body
+  CreateTransactionPayload:
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: transaction date
+        description:
+          type: string
+          description: transaction description
+        amount:
+          type: number
+          description: transaction amount
+        type:
+          type: string
+          description: transaction type
+        category:
+          type: string
+          description: transaction category
+        note:
+          type: string
+          description: transaction note
+        
+  UpdateTransactionPayload:
+    properties:
+      category:
+        type: string
+        description: transaction category
+      note:
+        type: string
+        description: transaction note
+        
+# Define the response
+  TransactionsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: array
+        description: list of transactions
+        items:
+          $ref: '#/definitions/Transaction'

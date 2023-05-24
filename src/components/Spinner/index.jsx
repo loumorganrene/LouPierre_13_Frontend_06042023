@@ -1,7 +1,10 @@
+import '../Spinner/Spinner.css'
+
 function Spinner() {
   return (
-    <div className="loadingSpinnerContainer">
-        <div className="loadingSpinner"></div>
+    <div className="loaderContainer">
+      <div className="loader">
+      </div>
     </div>
   )
 }

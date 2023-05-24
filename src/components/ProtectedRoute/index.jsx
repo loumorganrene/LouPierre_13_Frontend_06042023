@@ -4,9 +4,9 @@ import { selectCurrentToken } from "../../features/auth/auth.slice"
 
 
 function ProtectedRoute() {
-
-    const token = useSelector(selectCurrentToken)
     const location = useLocation()
+    /* Global state */
+    const token = useSelector(selectCurrentToken)
 
     return (
         token
